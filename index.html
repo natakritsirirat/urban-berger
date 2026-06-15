@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>URBAN BURGER - Premium Experience</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    
+    <style>
+        /* --- MODAL POPUP FIX --- */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.85);
+            backdrop-filter: blur(5px);
+            justify-content: center;
+            align-items: center;
+            overflow-y: auto; /* เผื่อหน้าจอเล็ก */
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 0; /* ลบ padding เดิมออก เพื่อให้รูปชิดขอบ */
+            border-radius: 20px;
+            width: 90%;
+            max-width: 450px; /* ลดความกว้างลงหน่อยให้ดูเหมือนมือถือ */
+            position: relative;
+            text-align: left;
+            animation: zoomIn 0.3s ease;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+            overflow: hidden; /* ตัดส่วนเกินของรูป */
+            display: flex;
+            flex-direction: column;
+        }
+
+        .modal-img {
+            width: 100%;
+            height: 250px; /* กำหนดความสูงรูป */
+            object-fit: cover; /* ให้รูปเต็มพื้นที่โดยไม่เสียสัดส่วน */
+            border-bottom: 1px solid #eee;
+        }
+
+        .modal-body {
+            padding: 25px; /* ใส่ Padding ให้เนื้อหาข้างใน */
+            overflow-y: auto;
+            max-height: 60vh; /* กันไม่ให้ pop-up สูงเกินหน้าจอ */
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: white; /* เปลี่ยนเป็นสีขาวเพื่อให้เห็นชัดบนรูป */
+            background: rgba(0,0,0,0.5); /* พื้นหลังดำจางๆ รองปุ่ม */
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+            transition: 0.2s;
+        }
+        .close-btn:hover { background: rgba(0,0,0,0.8); }
+
+        .addon-section {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 15px;
+            margin-top: 15px;
+            border: 1px solid #eee;
+        }
+
+        .modal-footer {
+            padding: 15px 25px 25px;
+            background: white;
+            border-top: 1px solid #f0f0f0;
+        }
+    </style>
+</head>
+<body>
+
+    <button onclick="topFunction()" id="scrollTopBtn" title="Go to top"><i class="fas fa-arrow-up"></i></button>
+
+    <nav>
+        <div class="logo"><i class="fas fa-hamburger"></i> URBAN BURGER</div>
+        <div class="nav-links">
+            <a href="index.html" class="active">Home</a>
+            <a href="about.html">About</a>
+            <a href="privacy.html">Privacy</a>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <h1 data-aos="fade-down" data-aos-duration="1000">URBAN BURGER</h1>
+        <p data-aos="fade-up" data-aos-delay="200">“Burger สดใหม่ ชิ้นใหญ่ อร่อยทุกคำ”</p>
+        <button class="cta-button" onclick="scrollToMenu()" data-aos="zoom-in" data-aos-delay="400">สั่งเลย</button>
+    </header>
+
+    <div class="container">
+        
+        <h2 class="section-title" data-aos="fade-up">โปรโมชั่นร้อนแรง</h2>
+        <div class="promo-grid">
+            <div class="promo-card" data-aos="fade-up" data-aos-delay="100">
+                <span class="promo-tag">HOT!</span>
+                <img src="https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=500&q=60" width="100%" height="200" style="object-fit: cover;">
+                <div class="promo-content">
+                    <h3>เบอร์เกอร์ชีส ซื้อ 1 แถม 1</h3>
+                    <p>เฉพาะวันจันทร์ - ศุกร์</p>
+                </div>
+            </div>
+            <div class="promo-card" data-aos="fade-up" data-aos-delay="200">
+                <span class="promo-tag">Combo</span>
+                <img src="https://images.unsplash.com/photo-1594212699903-ec8a3eca50f5?auto=format&fit=crop&w=500&q=60" width="100%" height="200" style="object-fit: cover;">
+                <div class="promo-content">
+                    <h3>Set สุดคุ้ม</h3>
+                    <p>เบอร์เกอร์ + เฟรนช์ฟราย 199.-</p>
+                </div>
+            </div>
+            <div class="promo-card" data-aos="fade-up" data-aos-delay="300">
+                <span class="promo-tag">-20%</span>
+                <img src="https://images.unsplash.com/photo-1553979459-d2229ba7433b?auto=format&fit=crop&w=500&q=60" width="100%" height="200" style="object-fit: cover;">
+                <div class="promo-content">
+                    <h3>Wagyu Beef Burger</h3>
+                    <p>เนื้อวากิวพรีเมียม ลด 20%</p>
+                </div>
+            </div>
+        </div>
+
+        <hr style="border: 0; border-top: 1px solid #ddd; margin: 80px 0;">
+
+        <h2 id="menu-section" class="section-title">🍔 เมนูเบอร์เกอร์</h2>
+        <p style="text-align: center; color: #777; margin-bottom: 30px;">(คลิกที่รูปเพื่อเลือกท็อปปิ้งเพิ่มเติม)</p>
+        
+        <div class="menu-grid">
+            <div class="menu-item" onclick="openModal('Classic Beef Burger', '159', 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=500&q=60', 'เนื้อย่างไฟหอมกรุ่น ผักสด ซอสสูตรพิเศษ')">
+                <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=500&q=60" class="menu-img">
+                <div class="menu-info">
+                    <div class="menu-name">Classic Beef Burger</div>
+                    <div class="menu-desc">เนื้อย่างไฟหอมกรุ่น ผักสด</div>
+                    <div class="menu-price">฿159</div>
+                </div>
+            </div>
+
+            <div class="menu-item" onclick="openModal('Cheese Lover Burger', '189', 'https://images.unsplash.com/photo-1550317138-10000687a72b?auto=format&fit=crop&w=500&q=60', 'ชีสเยิ้มๆ แบบจัดเต็ม สะใจคนรักชีส')">
+                <img src="https://images.unsplash.com/photo-1550317138-10000687a72b?auto=format&fit=crop&w=500&q=60" class="menu-img">
+                <div class="menu-info">
+                    <div class="menu-name">Cheese Lover Burger</div>
+                    <div class="menu-desc">ชีสเยิ้มๆ สะใจคนรักชีส</div>
+                    <div class="menu-price">฿189</div>
+                </div>
+            </div>
+
+            <div class="menu-item" onclick="openModal('Spicy Burger', '169', 'https://images.unsplash.com/photo-1551782450-a2132b4ba21d?auto=format&fit=crop&w=500&q=60', 'รสจัดจ้าน สไตล์ไทย เผ็ดกำลังดี')">
+                <div class="badge-container">
+                    <span class="badge spicy"><i class="fas fa-pepper-hot"></i> Spicy</span>
+                </div>
+                <img src="https://images.unsplash.com/photo-1551782450-a2132b4ba21d?auto=format&fit=crop&w=500&q=60" class="menu-img">
+                <div class="menu-info">
+                    <div class="menu-name">Spicy Burger</div>
+                    <div class="menu-desc">รสจัดจ้าน สไตล์ไทย</div>
+                    <div class="menu-price">฿169</div>
+                </div>
+            </div>
+
+            <div class="menu-item" onclick="openModal('Veggie Burger', '149', 'https://www.realsimple.com/thmb/z3cQCYXTyDQS9ddsqqlTVE8fnpc=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/real-simple-mushroom-black-bean-burgers-recipe-0c365277d4294e6db2daa3353d6ff605.jpg', 'โปรตีนจากพืช 100% เพื่อสุขภาพที่ดี')">
+                <div class="badge-container">
+                    <span class="badge veg"><i class="fas fa-leaf"></i> Veggie</span>
+                    <span class="badge nut"><i class="fas fa-leaf"></i> Nut-Free</span>
+                </div>
+                <img src="https://www.realsimple.com/thmb/z3cQCYXTyDQS9ddsqqlTVE8fnpc=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/real-simple-mushroom-black-bean-burgers-recipe-0c365277d4294e6db2daa3353d6ff605.jpg" class="menu-img">
+                <div class="menu-info">
+                    <div class="menu-name">Veggie Burger</div>
+                    <div class="menu-desc">โปรตีนจากพืช อร่อยไม่อ้วน</div>
+                    <div class="menu-price">฿149</div>
+                </div>
+            </div>
+            <div class="menu-item" onclick="openModal('Double Bacon', '219', 'https://images.unsplash.com/photo-1596662951482-0c4ba74a6df6?auto=format&fit=crop&w=500&q=60', 'เบคอนกรอบ 2 เท่า อร่อยเต็มคำ')">
+                <img src="https://images.unsplash.com/photo-1596662951482-0c4ba74a6df6?auto=format&fit=crop&w=500&q=60" class="menu-img">
+                <div class="menu-info">
+                    <div class="menu-name">Double Bacon</div>
+                    <div class="menu-desc">เบคอนกรอบ 2 เท่า</div>
+                    <div class="menu-price">฿219</div>
+                </div>
+            </div>
+
+            <div class="menu-item" onclick="openModal('Chicken Burger', '139', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSi4kmRq92ECw6KxUJtITnRrxzOQY9XfL5l6w&s', 'ไก่ทอดกรอบนอกนุ่มใน สูตรต้นตำรับ')">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSi4kmRq92ECw6KxUJtITnRrxzOQY9XfL5l6w&s" class="menu-img">
+                <div class="menu-info">
+                    <div class="menu-name">Chicken Burger</div>
+                    <div class="menu-desc">ไก่ทอดกรอบนอกนุ่มใน</div>
+                    <div class="menu-price">฿139</div>
+                </div>
+            </div>
+
+            <div class="menu-item" onclick="openModal('Crispy Fish Burger', '149', 'https://images.unsplash.com/photo-1572802419224-296b0aeee0d9?auto=format&fit=crop&w=500&q=60', 'เนื้อปลาชุบแป้งทอดกรอบ พร้อมซอสทาร์ทาร์')">
+                <div class="badge-container">
+                    <span class="badge" style="background-color: #3498db;"><i class="fas fa-fish"></i> Fish</span>
+                </div>
+                <img src="https://images.unsplash.com/photo-1572802419224-296b0aeee0d9?auto=format&fit=crop&w=500&q=60" class="menu-img">
+                <div class="menu-info">
+                    <div class="menu-name">Crispy Fish Burger</div>
+                    <div class="menu-desc">ปลาทอดกรอบ ซอสทาร์ทาร์</div>
+                    <div class="menu-price">฿149</div>
+                </div>
+            </div>
+
+            <div class="menu-item" onclick="openModal('Truffle Mushroom', '249', 'https://images.unsplash.com/photo-1594212699903-ec8a3eca50f5?auto=format&fit=crop&w=500&q=60', 'หอมกลิ่นทรัฟเฟิล ซอสเห็ดสูตรพิเศษ เนื้อฉ่ำๆ')">
+                <div class="badge-container">
+                    <span class="badge" style="background-color: #2c3e50;"><i class="fas fa-gem"></i> Premium</span>
+                </div>
+                <img src="https://images.unsplash.com/photo-1594212699903-ec8a3eca50f5?auto=format&fit=crop&w=500&q=60" class="menu-img">
+                <div class="menu-info">
+                    <div class="menu-name">Truffle Mushroom</div>
+                    <div class="menu-desc">ซอสเห็ดทรัฟเฟิลเข้มข้น</div>
+                    <div class="menu-price">฿249</div>
+                </div>
+            </div>
+
+            <div class="menu-item" onclick="openModal('Hawaiian Burger', '179', 'https://www.food4life.org.uk/multisite/wp-content/uploads/sites/2/2022/06/beef_hawaiianburger1-1109x627jpg-1.jpg', 'รสชาติเขตร้อน สับปะรดหวานฉ่ำ ตัดกับเบคอนและชีส')">
+                <img src="https://www.food4life.org.uk/multisite/wp-content/uploads/sites/2/2022/06/beef_hawaiianburger1-1109x627jpg-1.jpg" class="menu-img">
+                <div class="menu-info">
+                    <div class="menu-name">Hawaiian Burger</div>
+                    <div class="menu-desc">สับปะรด + เบคอน + ชีส</div>
+                    <div class="menu-price">฿179</div>
+                </div>
+            </div>
+
+            <div class="menu-item" onclick="openModal('BBQ Pulled Pork', '199', 'https://www.thespeckledpalate.com/wp-content/uploads/2023/07/The-Speckled-Palate-BBQ-Pulled-Pork-Sandwiches-Photo.jpg', 'หมูฉีกซอสบาร์บีคิว เข้มข้น นุ่มละลายในปาก')">
+                 <div class="badge-container">
+                    <span class="badge" style="background-color: #d35400;"><i class="fas fa-fire"></i> BBQ</span>
+                </div>
+                <img src="https://www.thespeckledpalate.com/wp-content/uploads/2023/07/The-Speckled-Palate-BBQ-Pulled-Pork-Sandwiches-Photo.jpg" class="menu-img">
+                <div class="menu-info">
+                    <div class="menu-name">BBQ Pulled Pork</div>
+                    <div class="menu-desc">หมูฉีกซอสบาร์บีคิวเข้มข้น</div>
+                    <div class="menu-price">฿199</div>
+                </div>
+            </div>
+        </div>
+
+
+        <hr style="border: 0; border-top: 1px solid #ddd; margin: 80px 0;">
+
+        <h2 class="section-title">🍟 ของทานเล่น (Snacks)</h2>
+        <div class="menu-grid">
+            <div class="menu-item" onclick="openModal('French Fries', '69', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTaKRsbNwZiOOZM25wO1K0dV0WD1hzj_l6owQ&s', 'เฟรนช์ฟรายแท่งใหญ่ ทอดกรอบ')">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTaKRsbNwZiOOZM25wO1K0dV0WD1hzj_l6owQ&s" class="menu-img">
+                <div class="menu-info">
+                    <div class="menu-name">French Fries</div>
+                    <div class="menu-price">฿69</div>
+                </div>
+            </div>
+            <div class="menu-item" onclick="openModal('Chicken Nuggets', '89', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFP8ONEsy2XmKzd0FJb_9mmJQKgd8_6HtH2Q&s', 'นักเก็ตไก่กรอบนอกนุ่มใน 6 ชิ้น')">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFP8ONEsy2XmKzd0FJb_9mmJQKgd8_6HtH2Q&s" class="menu-img">
+                <div class="menu-info">
+                    <div class="menu-name">Chicken Nuggets</div>
+                    <div class="menu-price">฿89</div>
+                </div>
+            </div>
+            <div class="menu-item" onclick="openModal('Onion Rings', '79', 'https://images.unsplash.com/photo-1639024471283-03518883512d?auto=format&fit=crop&w=500&q=60', 'หอมทอดวงใหญ่ แป้งกรอบ')">
+                <img src="https://images.unsplash.com/photo-1639024471283-03518883512d?auto=format&fit=crop&w=500&q=60" class="menu-img">
+                <div class="menu-info">
+                    <div class="menu-name">Onion Rings</div>
+                    <div class="menu-price">฿79</div>
+                </div>
+            </div>
+            <div class="menu-item" onclick="openModal('Cheese Ball', '99', 'https://srichennaibakerykingandsweets.com/wp-content/uploads/2025/07/Cheese-Balls.jpg', 'ชีสบอลยืดๆ 5 ลูก')">
+                <img src="https://srichennaibakerykingandsweets.com/wp-content/uploads/2025/07/Cheese-Balls.jpg" class="menu-img">
+                <div class="menu-info">
+                    <div class="menu-name">Cheese Ball</div>
+                    <div class="menu-price">฿99</div>
+                </div>
+            </div>
+        </div>
+
+        <hr style="border: 0; border-top: 1px solid #ddd; margin: 80px 0;">
+
+        <h2 class="section-title" data-aos="fade-left">🥤 เครื่องดื่ม (Drinks)</h2>
+        <div class="drinks-grid">
+            <div class="drink-item" data-aos="zoom-in">
+                <div class="drink-icon"><i class="fas fa-glass-whiskey"></i></div>
+                <h4>น้ำอัดลม (Coke/Sprite)</h4>
+                <p style="color:var(--primary-color); font-weight:bold;">฿35</p>
+            </div>
+            <div class="drink-item" data-aos="zoom-in" data-aos-delay="100">
+                <div class="drink-icon"><i class="fas fa-coffee"></i></div>
+                <h4>กาแฟเย็น (Iced Coffee)</h4>
+                <p style="color:var(--primary-color); font-weight:bold;">฿55</p>
+            </div>
+            <div class="drink-item" data-aos="zoom-in" data-aos-delay="200">
+                <div class="drink-icon"><i class="fas fa-leaf"></i></div>
+                <h4>ชาเย็น / ชาเขียว</h4>
+                <p style="color:var(--primary-color); font-weight:bold;">฿50</p>
+            </div>
+            <div class="drink-item" data-aos="zoom-in" data-aos-delay="300">
+                <div class="drink-icon"><i class="fas fa-blender"></i></div>
+                <h4>Milkshake</h4>
+                <p style="color: #777; font-size: 0.8rem;">Vanilla / Choco / Strawberry</p>
+                <p style="color:var(--primary-color); font-weight:bold;">฿89</p>
+            </div>
+        </div>
+
+    </div>
+
+    <footer>
+        <h2 style="color:white;">URBAN BURGER</h2>
+        <div style="font-size: 1.5rem; margin: 20px 0;">
+            <i class="fab fa-facebook" style="margin: 0 10px; cursor:pointer;"></i>
+            <i class="fab fa-instagram" style="margin: 0 10px; cursor:pointer;"></i>
+            <i class="fab fa-tiktok" style="margin: 0 10px; cursor:pointer;"></i>
+            <i class="fab fa-line" style="margin: 0 10px; cursor:pointer;"></i>
+        </div>
+        <p>© 2023 URBAN BURGER. All Rights Reserved.</p>
+    </footer>
+
+    <div id="menuModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal()">×</span>
+            <img id="modal-img" src="" class="modal-img">
+            
+            <div class="modal-body">
+                <h2 id="modal-title" style="margin: 0 0 5px 0; color: #333; font-size: 1.5rem;">Menu Name</h2>
+                <p id="modal-desc" style="color: #666; margin: 0 0 15px 0; font-size: 0.95rem;">Description</p>
+                <h3 id="modal-price" style="color: #FF8C00; margin: 0; font-size: 1.4rem;">฿0</h3>
+                
+                <div class="addon-section">
+                    <span class="addon-title" style="display:block; margin-bottom:10px; font-weight:600;">เพิ่มเติมความอร่อย (Add-ons)</span>
+                    <label class="addon-option" style="display:flex; justify-content:space-between; margin-bottom:8px; cursor:pointer;">
+                        <span><input type="checkbox" style="margin-right:8px;"> เพิ่มชีส (Extra Cheese)</span>
+                        <span style="color:#666;">+20.-</span>
+                    </label>
+                    <label class="addon-option" style="display:flex; justify-content:space-between; margin-bottom:8px; cursor:pointer;">
+                        <span><input type="checkbox" style="margin-right:8px;"> เพิ่มเนื้อ (Extra Meat)</span>
+                        <span style="color:#666;">+30.-</span>
+                    </label>
+                    <label class="addon-option" style="display:flex; justify-content:space-between; cursor:pointer;">
+                        <span><input type="checkbox" style="margin-right:8px;"> เพิ่มเบคอน (Extra Bacon)</span>
+                        <span style="color:#666;">+25.-</span>
+                    </label>
+                </div>
+            </div>
+            
+            <div class="modal-footer">
+                <button class="cta-button" style="width: 100%; border-radius: 10px; font-size: 1.1rem; padding: 12px;">เพิ่มลงตะกร้า</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+    <script>
+        AOS.init({
+            duration: 800, 
+            once: true,    
+        });
+
+        function scrollToMenu() {
+            document.getElementById('menu-section').scrollIntoView({behavior: 'smooth'});
+        }
+
+        function openModal(name, price, img, desc) {
+            var modal = document.getElementById('menuModal');
+            document.getElementById('modal-title').innerText = name;
+            document.getElementById('modal-price').innerText = '฿' + price;
+            document.getElementById('modal-img').src = img;
+            document.getElementById('modal-desc').innerText = desc;
+            modal.style.display = 'flex';
+        }
+        function closeModal() {
+            document.getElementById('menuModal').style.display = 'none';
+        }
+        window.onclick = function(event) {
+            let modal = document.getElementById('menuModal');
+            if (event.target == modal) { modal.style.display = "none"; }
+        }
+
+        let mybutton = document.getElementById("scrollTopBtn");
+
+        window.onscroll = function() {scrollFunction()};
+
+        function scrollFunction() {
+            if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+                mybutton.style.display = "block";
+            } else {
+                mybutton.style.display = "none";
+            }
+        }
+
+        function topFunction() {
+            document.body.scrollTop = 0;
+            document.documentElement.scrollTop = 0;
+        }
+    </script>
+
+</body>
+</html>
